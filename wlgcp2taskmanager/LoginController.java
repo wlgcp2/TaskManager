@@ -51,8 +51,7 @@ public class LoginController extends CommonUI implements Initializable, Property
     }
     
     @FXML
-    private void newUserButton(ActionEvent event) {
-        
+    private void newUserButton(ActionEvent event) {       
         try {
             if(newUserScene == null){               
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("NewUser.fxml"));
@@ -115,6 +114,5 @@ public class LoginController extends CommonUI implements Initializable, Property
         if(evt.getPropertyName().equals("Error")){
             errorPopup((String) evt.getNewValue());
         }
-    }
-    
+    }   
 }

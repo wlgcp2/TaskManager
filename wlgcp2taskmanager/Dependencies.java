@@ -24,8 +24,7 @@ public abstract class Dependencies {
     public Dependencies (){
         propertyChangeSupport = new PropertyChangeSupport(this);
     }
-    
-    
+      
     //Property change listeners
     public void addPropertyChangeListener(PropertyChangeListener listener){
         propertyChangeSupport.addPropertyChangeListener(listener);
@@ -39,12 +38,21 @@ public abstract class Dependencies {
         propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
     }
     
+    //Error notifications
     public void error() {
         firePropertyChange("Error", "", "Unexpected error occured.");
     }
     
     public void dbError() {
-        firePropertyChange("Error", "", "Database error occured");
+        firePropertyChange("Error", "", "Database error occured.");
+    }
+    
+    public void connectionError() {
+        firePropertyChange("Error", "", "Cannot reach database.");
+    }
+    
+    public void sqlDriverError() {
+        firePropertyChange("Error", "", "JDBC driver not found.");
     }
     
     
@@ -66,7 +74,7 @@ public abstract class Dependencies {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            dbError();
+            sqlDriverError();
             return null;
         }
         
@@ -77,12 +85,7 @@ public abstract class Dependencies {
         } 
         catch (SQLException e) {
             System.out.println("Connection Failed!:\n" + e.getMessage());
-            dbError();
-            return null;
-        }
-        catch (Exception e) {
-            System.out.println("Connection Failed!:\n" + e.getMessage());
-            dbError();
+            connectionError();
             return null;
         }
 
@@ -99,12 +102,6 @@ public abstract class Dependencies {
         catch (SQLException se) {
             se.printStackTrace();
             System.out.println(se); 
-            dbError();
-            check = false;
-        } 
-        catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e); 
             dbError();
             check = false;
         } 
@@ -131,8 +128,7 @@ public abstract class Dependencies {
         return check;
     }
     
-    public String hashPassword(String password) {
-        
+    public String hashPassword(String password) {       
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-1");
 	    

@@ -15,15 +15,14 @@ import java.sql.SQLException;
  * @author William
  */
 public class LoginModel extends Dependencies implements Serializable {
+    private Integer userID = null;
     private String username;
     private String password;
     private String hashedPassword;
-    
-    private Integer userID = null;
     private String firstName;
     private String lastName;
     
-    User user;
+    private User user;
     
     public void login(String username, String password) {
         this.username = username;
@@ -50,8 +49,7 @@ public class LoginModel extends Dependencies implements Serializable {
             user = new User(userID, username, firstName, lastName);
             firePropertyChange("LoginSuccessful", null, user);
         }
-        else { firePropertyChange("FormStatus", "", "Incorrect username or password"); }
-            
+        else { firePropertyChange("FormStatus", "", "Incorrect username or password"); }          
     }
     
     //Query db for user
@@ -64,8 +62,8 @@ public class LoginModel extends Dependencies implements Serializable {
             conn = connectToDB();
             
             stmt = conn.prepareStatement("SELECT id, firstName, lastName FROM users WHERE username = ? AND password = ?");
-            stmt.setString(1, username);
-            stmt.setString(2, hashedPassword);
+                stmt.setString(1, username);
+                stmt.setString(2, hashedPassword);
             
             ResultSet rs = stmt.executeQuery();
             
@@ -85,12 +83,6 @@ public class LoginModel extends Dependencies implements Serializable {
             dbError();
             login = false;
         } 
-        catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e); 
-            dbError();
-            login = false;
-        } 
         finally {
             try {
                 if (stmt != null)
@@ -99,7 +91,6 @@ public class LoginModel extends Dependencies implements Serializable {
             catch (Exception e) {
                 e.printStackTrace();
                 System.out.println(e); 
-                dbError();
             }
             
             try {
@@ -109,7 +100,6 @@ public class LoginModel extends Dependencies implements Serializable {
             catch (Exception e) { 
                 e.printStackTrace();
                 System.out.println(e);
-                dbError();
             }
         }
         

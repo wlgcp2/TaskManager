@@ -7,6 +7,7 @@ package wlgcp2taskmanager;
 
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  *
@@ -56,16 +57,17 @@ public class NewUserModel extends Dependencies {
             conn = connectToDB();
             
             stmt = conn.prepareStatement("INSERT INTO users (username, password, firstName, lastName, addDate) values (?, ?, ?, ?, NOW())");
-            stmt.setString(1, username);
-            stmt.setString(2, hashedPassword);
-            stmt.setString(3, firstName);
-            stmt.setString(4, lastName);
+                stmt.setString(1, username);
+                stmt.setString(2, hashedPassword);
+                stmt.setString(3, firstName);
+                stmt.setString(4, lastName);
 
             check = updateDB(conn, stmt);
         } 
-        catch (Exception e) {
-            firePropertyChange("Error", "", "Unexpected error occured.");
-            check = false;
+        catch (SQLException se) {
+            se.printStackTrace();
+            System.out.println(se); 
+            dbError();
         }
         
         return check;
@@ -78,6 +80,5 @@ public class NewUserModel extends Dependencies {
         if(firstName == null || firstName.equals("")) return false;
         if(lastName == null || lastName.equals("")) return false;             
         return true;
-    }
-    
+    }   
 }

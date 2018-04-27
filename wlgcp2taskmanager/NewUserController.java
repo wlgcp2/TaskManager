@@ -83,6 +83,5 @@ public class NewUserController extends CommonUI implements Initializable, Proper
         if(evt.getPropertyName().equals("Error")){
             errorPopup((String) evt.getNewValue());
         }
-    }
-    
+    }   
 }

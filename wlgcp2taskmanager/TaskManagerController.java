@@ -86,8 +86,7 @@ public class TaskManagerController extends CommonUI implements Initializable, Pr
         gridPane.add(taskInput, 1, 0);
         gridPane.add(dateLabel, 0, 1);
         gridPane.add(dueDate, 1, 1);
- 
-        
+      
         dialogPane.setContent(gridPane);
         
         newTaskDialog.setResultConverter((ButtonType button) -> {
@@ -115,7 +114,6 @@ public class TaskManagerController extends CommonUI implements Initializable, Pr
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         taskManagerModel = new TaskManagerModel();
         
         taskColumn.setCellValueFactory(new PropertyValueFactory<>("task"));      

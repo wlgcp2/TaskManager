@@ -36,6 +36,7 @@ public class TaskManagerModel extends Dependencies {
         catch (Exception e) {
             e.printStackTrace();
             System.out.println(e); 
+            return;
         }
             
         firePropertyChange("UpdateTasks", null, tasks);             
@@ -61,13 +62,12 @@ public class TaskManagerModel extends Dependencies {
             conn = connectToDB();
             
             stmt = conn.prepareStatement("SELECT tasks.id, task, tasks.addDate, date_format(taskDueDate,'%b %D') as dueDate, taskStatus FROM tasks WHERE tasks.userID = ?");
-            stmt.setInt(1, userID);
+                stmt.setInt(1, userID);
             
             ResultSet rs = stmt.executeQuery();
             
             if(rs != null){
                 while (rs.next()) {
-                
                     taskID = rs.getInt("id");
                     task = rs.getString("task");
                     addDate = rs.getString("addDate");
@@ -85,12 +85,7 @@ public class TaskManagerModel extends Dependencies {
             se.printStackTrace();
             System.out.println(se); 
             dbError();
-        } 
-        catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e);
-            dbError();
-        } 
+        }
         finally {
             try {
                 if (stmt != null)
@@ -126,17 +121,18 @@ public class TaskManagerModel extends Dependencies {
             Timestamp dueDate = new java.sql.Timestamp(newTask.getDueDateValue().getTimeInMillis());
             
             stmt = conn.prepareStatement("INSERT INTO tasks (userID, task, addDate, taskDueDate, taskStatus) values (?, ?, NOW(), ?, 0);");
-            stmt.setInt(1, user.getID());
-            stmt.setString(2, newTask.getTask());
-            stmt.setTimestamp(3, dueDate);
+                stmt.setInt(1, user.getID());
+                stmt.setString(2, newTask.getTask());
+                stmt.setTimestamp(3, dueDate);
             
             updateDB(conn, stmt);
             
             check = true;
         }
-        catch (Exception e) {
+        catch (SQLException se) {
+            se.printStackTrace();
+            System.out.println(se); 
             dbError();
-            check = false;
         }
         
         //Reload tasks
@@ -155,14 +151,15 @@ public class TaskManagerModel extends Dependencies {
             conn = connectToDB();
             
             stmt = conn.prepareStatement("DELETE FROM tasks WHERE id = ? AND userID = ?");
-            stmt.setInt(1, task.getTaskID());
-            stmt.setInt(2, user.getID());
+                stmt.setInt(1, task.getTaskID());
+                stmt.setInt(2, user.getID());
             
             check = updateDB(conn, stmt);
         }
-        catch (Exception e) {
+        catch (SQLException se) {
+            se.printStackTrace();
+            System.out.println(se); 
             dbError();
-            return;
         }
             
         if(check == true) {
@@ -197,18 +194,18 @@ public class TaskManagerModel extends Dependencies {
             conn = connectToDB();
             
             stmt = conn.prepareStatement("UPDATE tasks SET taskStatus = ? WHERE id = ? AND userID = ?");
-            stmt.setInt(1, status);
-            stmt.setInt(2, task.getTaskID());
-            stmt.setInt(3, user.getID());
+                stmt.setInt(1, status);
+                stmt.setInt(2, task.getTaskID());
+                stmt.setInt(3, user.getID());
             
             check = updateDB(conn, stmt);
         }
-        catch (Exception e) {
+        catch (SQLException se) {
+            se.printStackTrace();
+            System.out.println(se); 
             dbError();
-            check = false;
         }
    
         return check;
-    }
-    
+    }   
 }

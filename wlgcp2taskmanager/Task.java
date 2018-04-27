@@ -45,8 +45,7 @@ public class Task {
         if (task == null)  task = new SimpleStringProperty(this, "task");
         return task; 
     }
-    
-    
+      
     //Task Due Date String
     private StringProperty taskDueDate;
     
@@ -74,8 +73,7 @@ public class Task {
         
         taskDueDateValue = dueDate;
     }  
-    
-    
+      
     //Task Status String
     private StringProperty taskStatus;
     
