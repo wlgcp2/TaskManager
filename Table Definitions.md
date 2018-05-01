@@ -15,7 +15,7 @@ CREATE TABLE users (
 ## Tasks
 ~~~~
 CREATE TABLE tasks (
-	id int auto_increment primary key not null,
+    id int auto_increment primary key not null,
     userID int not null,
     task text not null,
     addDate datetime not null,
