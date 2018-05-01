@@ -15,21 +15,24 @@ import javafx.beans.property.StringProperty;
  *
  * @author William
  */
-public class Task {
+public final class Task {
     private int taskID;
     
-    public Task(int taskID, String task, String taskDueDate, String status) {
+    //Constructors
+    public Task(int taskID, String task, String taskDueDate, Calendar taskDueDateValue, String status) {
         this.taskID = taskID;
         setTask(task);
         setDueDate(taskDueDate);
+        setDueDateCalendar(taskDueDateValue);
         setStatus(status);
     }
     
-    public Task(String task, LocalDate dueDateValue) {
+    public Task(String task, LocalDate dueDateValue, int hour, int minute, String am_pm) {
         setTask(task);
-        setDueDateLocal(dueDateValue);
+        setDueDateCalendar(dueDateValue, hour, minute, am_pm);
     }
     
+    //Get the tasks db ID
     public int getTaskID() {
         return taskID;
     }
@@ -39,7 +42,7 @@ public class Task {
     
     public String getTask() { return taskProperty().get(); }  
     
-    public void setTask(String val) { taskProperty().set(val); }
+    public void setTask(String value) { taskProperty().set(value); }
 
     public StringProperty taskProperty() { 
         if (task == null)  task = new SimpleStringProperty(this, "task");
@@ -51,7 +54,7 @@ public class Task {
     
     public String getDueDate() { return taskDueDateProperty().get(); }
     
-    public void setDueDate(String val) { taskDueDateProperty().set(val); }  
+    public void setDueDate(String value) { taskDueDateProperty().set(value); }  
     
     public StringProperty taskDueDateProperty() { 
         if (taskDueDate == null) taskDueDate = new SimpleStringProperty(this, "taskDueDate");
@@ -61,16 +64,23 @@ public class Task {
     //Task Due Date Calender
     private Calendar taskDueDateValue;
     
-    public Calendar getDueDateValue() { return taskDueDateValue; }
+    public Calendar getDueDateCalendar() { return taskDueDateValue; }
     
-    public void setDueDateValue(Calendar date) { taskDueDateValue = date; }  
+    public void setDueDateCalendar(Calendar date) { taskDueDateValue = date; }  
     
-    public void setDueDateLocal(LocalDate localDate) { 
+    public void setDueDateCalendar(LocalDate localDate, int hour, int minute, String am_pm) { 
         Date dateBuffer = Date.valueOf(localDate);
         
         Calendar dueDate = Calendar.getInstance();
         dueDate.setTime(dateBuffer);
         
+        dueDate.set(Calendar.HOUR, hour);
+        dueDate.set(Calendar.MINUTE, minute);
+        dueDate.set(Calendar.YEAR, localDate.getYear());
+        
+        if(am_pm.equals("AM")) dueDate.set(Calendar.AM_PM, Calendar.AM);
+        else if(am_pm.equals("PM")) dueDate.set(Calendar.AM_PM, Calendar.PM);
+
         taskDueDateValue = dueDate;
     }  
       
@@ -79,7 +89,7 @@ public class Task {
     
     public String getStatus() { return taskStatusProperty().get(); }
     
-    public void setStatus(String val) { taskStatusProperty().set(val); }
+    public void setStatus(String value) { taskStatusProperty().set(value); }
 
     public StringProperty taskStatusProperty() { 
         if (taskStatus == null) taskStatus = new SimpleStringProperty(this, "taskStatus");

@@ -24,10 +24,6 @@ import javafx.stage.Stage;
  * @author William
  */
 public class NewUserController extends CommonUI implements Initializable, PropertyChangeListener {
-    private Stage stage; 
-    public Scene LoginScene; 
-    public LoginController LoginController; 
-    
     private NewUserModel newUserModel;
     
     @FXML private TextField newUsername;  
@@ -40,14 +36,14 @@ public class NewUserController extends CommonUI implements Initializable, Proper
     
  
     @FXML
-    private void createAccountButton(ActionEvent event) {
+    private void createAccountButton() {
         newUserModel.createUser(newUsername.getText(), newPassword1.getText(), newPassword2.getText(), newFirstName.getText(), newLastName.getText());
     }
     
     @FXML
-    private void exitButton(ActionEvent event) {  
+    private void exitButton() {  
         clear();
-        stage.setScene(LoginScene);
+        stage.setScene(loginScene);
         stage.setTitle("Login");
     }
     
@@ -60,8 +56,8 @@ public class NewUserController extends CommonUI implements Initializable, Proper
         newLastName.setText("");
         error.setText("");
     }
-    
-    
+     
+    @Override
     public void start(Stage stage){
         this.stage = stage; 
         stage.setTitle("Create Account");

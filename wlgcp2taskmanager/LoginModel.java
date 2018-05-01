@@ -14,15 +14,11 @@ import java.sql.SQLException;
  *
  * @author William
  */
-public class LoginModel extends Dependencies implements Serializable {
-    private Integer userID = null;
+public class LoginModel extends Dependencies {
+    private int userID;
     private String username;
-    private String password;
-    private String hashedPassword;
-    private String firstName;
-    private String lastName;
-    
-    private User user;
+    private String password, hashedPassword;
+    private String firstName, lastName;
     
     public void login(String username, String password) {
         this.username = username;
@@ -45,9 +41,9 @@ public class LoginModel extends Dependencies implements Serializable {
 
         //Check credentials in db
         if(tryLogin(this.username, hashedPassword)){
-            firePropertyChange("FormStatus", "", "Login successful");
+            firePropertyChange("FormStatus", null, "");
             user = new User(userID, username, firstName, lastName);
-            firePropertyChange("LoginSuccessful", null, user);
+            firePropertyChange("LoginSuccessful", null, true);
         }
         else { firePropertyChange("FormStatus", "", "Incorrect username or password"); }          
     }
@@ -106,7 +102,8 @@ public class LoginModel extends Dependencies implements Serializable {
         return login;
     }
     
-    public boolean checkInput() {
+    //Check if form is complete
+    private boolean checkInput() {
         if(username == null || username.equals("")) return false;
         if(password == null || password.equals("")) return false;
 

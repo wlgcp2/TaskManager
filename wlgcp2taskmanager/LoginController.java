@@ -9,13 +9,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -26,9 +24,6 @@ import javafx.stage.Stage;
  * @author William
  */
 public class LoginController extends CommonUI implements Initializable, PropertyChangeListener {
-    private Stage stage; 
-    private Scene LoginScene;
-    
     private Scene newUserScene; 
     private NewUserController newUserController; 
     
@@ -40,25 +35,21 @@ public class LoginController extends CommonUI implements Initializable, Property
     @FXML private TextField loginUsername;
     @FXML private PasswordField loginPassword;
     
-    @FXML private Button loginButton; 
-    @FXML private Button newUserButton;
-    
     @FXML private Text error;
     
-    @FXML
-    private void loginButton(ActionEvent event) {
+    @FXML //Try login from form
+    private void loginButton() {
         loginModel.login(loginUsername.getText(), loginPassword.getText());
     }
     
-    @FXML
-    private void newUserButton(ActionEvent event) {       
+    @FXML //Switch to new user form
+    private void newUserButton() {       
         try {
             if(newUserScene == null){               
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("NewUser.fxml"));
                 Parent newUserRoot = loader.load(); 
                 newUserController = loader.getController(); 
-                newUserController.LoginScene = LoginScene; 
-                newUserController.LoginController = this; 
+                newUserController.loginScene = loginScene; 
                 newUserScene = new Scene(newUserRoot); 
             }
         } catch (Exception ex) {
@@ -69,14 +60,14 @@ public class LoginController extends CommonUI implements Initializable, Property
         newUserController.start(stage);
     }
     
-    public void startTaskManager(User user) {
+    //Switch to main task manager
+    private void startTaskManager() {
         try {
             if(taskManagerScene == null){               
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("TaskManager.fxml"));
                 Parent newUserRoot = loader.load(); 
                 taskManagerController = loader.getController(); 
-                taskManagerController.LoginScene = LoginScene; 
-                taskManagerController.LoginController = this; 
+                taskManagerController.loginScene = loginScene; 
                 taskManagerScene = new Scene(newUserRoot); 
             }
         } catch (Exception ex) {
@@ -85,12 +76,13 @@ public class LoginController extends CommonUI implements Initializable, Property
         
         stage.setScene(taskManagerScene);  
         
-        taskManagerController.start(stage, user);
+        taskManagerController.start(stage);
     }
     
+    @Override
     public void start(Stage stage) {
         this.stage = stage; 
-        LoginScene = stage.getScene(); 
+        loginScene = stage.getScene(); 
         stage.setTitle("Login");
     }
     
@@ -107,8 +99,7 @@ public class LoginController extends CommonUI implements Initializable, Property
         }
         
         if(evt.getPropertyName().equals("LoginSuccessful")){
-            User user = (User)evt.getNewValue();
-            startTaskManager(user);
+            startTaskManager();
         }
         
         if(evt.getPropertyName().equals("Error")){

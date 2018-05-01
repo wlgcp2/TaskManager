@@ -18,14 +18,18 @@ import java.sql.SQLException;
  *
  * @author William
  */
-public abstract class Dependencies {
-    private PropertyChangeSupport propertyChangeSupport;
+public abstract class Dependencies implements Database {
+    //Current user
+    protected static User user;
     
+    //Constructor
     public Dependencies (){
         propertyChangeSupport = new PropertyChangeSupport(this);
     }
       
     //Property change listeners
+    private PropertyChangeSupport propertyChangeSupport;
+    
     public void addPropertyChangeListener(PropertyChangeListener listener){
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
@@ -64,11 +68,11 @@ public abstract class Dependencies {
     
     private Connection connection;
     
-    protected static Connection conn;
+    protected Connection conn;
     
     private String hashOutput = null;
     
-    
+    @Override
     public Connection connectToDB() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -92,6 +96,7 @@ public abstract class Dependencies {
         return connection;         
     }
     
+    @Override
     public boolean updateDB(Connection conn, PreparedStatement stmt) {
         boolean check = false;       
 
@@ -128,6 +133,7 @@ public abstract class Dependencies {
         return check;
     }
     
+    //Hash password function
     public String hashPassword(String password) {       
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-1");

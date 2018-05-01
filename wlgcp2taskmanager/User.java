@@ -9,11 +9,10 @@ package wlgcp2taskmanager;
  *
  * @author William
  */
-public class User {
-    private Integer id;
-    private String username;
-    private String firstName;
-    private String lastName;
+public final class User {
+    private final Integer id;
+    private final String username;
+    private final String firstName, lastName;
     
     public User(Integer id, String username, String firstName, String lastName) {
         this.id = id;

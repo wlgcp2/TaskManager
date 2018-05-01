@@ -5,14 +5,21 @@
  */
 package wlgcp2taskmanager;
 
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
 
 /**
  *
  * @author William
  */
 public abstract class CommonUI {
+    protected Stage stage; 
+    
+    protected Scene loginScene;
+    
+    //Display error popup
     public void errorPopup(String error) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error");
@@ -20,4 +27,6 @@ public abstract class CommonUI {
 
         alert.showAndWait();
     }
+    
+    public abstract void start(Stage stage);
 }

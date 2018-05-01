@@ -48,6 +48,7 @@ public class NewUserModel extends Dependencies {
  
     }
     
+    //Try to insert user
     private boolean insertUser(String username, String hashedPassword, String firstName, String lastName) {
         boolean check = false;
         
@@ -73,6 +74,7 @@ public class NewUserModel extends Dependencies {
         return check;
     }
     
+    //Check if form is complete 
     private boolean checkInput(String username, String password1, String password2, String firstName, String lastName) {
         if(username == null || username.equals("")) return false; 
         if(password1 == null || password1.equals("")) return false;
