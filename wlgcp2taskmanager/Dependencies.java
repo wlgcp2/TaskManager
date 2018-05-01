@@ -61,10 +61,10 @@ public abstract class Dependencies implements Database {
     
     
     //Database Logic
-    private final String url = "ec2-52-14-189-142.us-east-2.compute.amazonaws.com";
-    private final String dbUsername = "RemoteUser";
-    private final String dbPassword = "wlgcp2";
-    private final String dbName = "CS3330";
+    private final String url = "*********************************";
+    private final String dbUsername = "*********";
+    private final String dbPassword = "********";
+    private final String dbName = "*****";
     
     private Connection connection;
     
